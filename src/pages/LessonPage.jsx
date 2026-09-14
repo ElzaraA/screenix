@@ -1,8 +1,12 @@
-import {useState} from 'react'
-import {lessons as mockLessons} from '../data/mockData.js'
+import {useState, useEffect} from 'react'
+import {getLessons} from '../api/lessons.js'
 import LessonCard from '../components/LessonCard.jsx'
 function LessonPage(){
-    const[lessons, setLessons] = useState(mockLessons);
+    const[lessons, setLessons] = useState([]);
+    useEffect(()=>{
+        getLessons()
+            .then(data => setLessons(data))
+    }, [])
     return(
         <main style={{padding:'20px'}}>
             <h1>Мои уроки</h1>

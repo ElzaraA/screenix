@@ -1,8 +1,12 @@
-import { pupils as mockPupils} from '../data/mockData.js'
 import PupilCard from '../components/PupilCard.jsx'
-import {useState} from 'react'
+import {getPupils} from '../api/pupils.js'
+import {useState, useEffect} from 'react'
 function PupilsPage(){
-    const[pupils, setPupils] = useState(mockPupils);
+    const[pupils, setPupils] = useState([]);
+    useEffect(() =>{
+        getPupils()
+            .then(data => setPupils(data))
+    }, [])
     return(
         <main style={{padding:'20px'}}>
             {pupils.map(pupil => (
