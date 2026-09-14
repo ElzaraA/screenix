@@ -1,5 +1,7 @@
+const cors = require('cors')
 const express = require('express');
 const app = express();
+app.use(cors())
 const pupils = [
     {id: 1, name: "Камран", subject: "Подготовка к ОГЭ", age: 16, contacts:{phone:'+ 7 967 876 76 87', telegram: '@etwyw'}},
     {id: 2, name: "Маша", subject: "Подготовка к ЕГЭ", age: 18, contacts:{phone:'+ 7 934 543 33 37', telegram: '@lolo'}}
