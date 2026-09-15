@@ -7,8 +7,17 @@ function MainPage(){
     const [name, setName ] = useState ('')
     function handleSubmit(e){
     e.preventDefault()
-    console.log(name)
-    setName('')
+    if (!name.trim()){
+        return
+    }
+    
+    fetch ('http://localhost:3001/pupils',{
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name: name})
+    })
+        .then(res => res.json())
+        .then(() => setName(''))
 }
     return(
         <main style={{padding:'20px'}}>     

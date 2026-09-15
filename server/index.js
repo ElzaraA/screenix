@@ -1,13 +1,22 @@
 const cors = require('cors')
 const express = require('express');
 const app = express();
-app.use(cors())
+app.use(cors());
+app.use(express.json());
 const pupils = [
     {id: 1, name: "Камран", subject: "Подготовка к ОГЭ", age: 16, contacts:{phone:'+ 7 967 876 76 87', telegram: '@etwyw'}},
     {id: 2, name: "Маша", subject: "Подготовка к ЕГЭ", age: 18, contacts:{phone:'+ 7 934 543 33 37', telegram: '@lolo'}}
 ]
 app.get('/pupils', (req, res) =>{
     res.json(pupils)
+})
+app.post('/pupils', (req, res) =>{
+    const newId = pupils.length > 0
+        ? Math.max(...pupils.map(p => p.id))+1
+        : 1;
+    const newPupil = {...req.body, id: newId};
+    pupils.push(newPupil);
+    return res.status(201).json(newPupil);
 })
 app.get('/lessons', (req, res) =>{
     res.json([
@@ -19,7 +28,7 @@ app.get('/pupils/:id', (req, res) =>{
     const {id} = req.params;
     const pupil = pupils.find(p => p.id === Number(id))
     if (!pupil){
-        return res.status(404).json({error: 'Pupil not found'})
+        return res.status(404).json({error: 'Ученик не найден'})
     }
     res.json(pupil)
 })
