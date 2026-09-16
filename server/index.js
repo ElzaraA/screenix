@@ -3,13 +3,16 @@ const express = require('express');
 const app = express();
 app.use(cors());
 app.use(express.json());
-const pupils = [
+
+let pupils = [
     {id: 1, name: "Камран", subject: "Подготовка к ОГЭ", age: 16, contacts:{phone:'+ 7 967 876 76 87', telegram: '@etwyw'}},
     {id: 2, name: "Маша", subject: "Подготовка к ЕГЭ", age: 18, contacts:{phone:'+ 7 934 543 33 37', telegram: '@lolo'}}
 ]
+
 app.get('/pupils', (req, res) =>{
     res.json(pupils)
 })
+
 app.post('/pupils', (req, res) =>{
     const newId = pupils.length > 0
         ? Math.max(...pupils.map(p => p.id))+1
@@ -18,6 +21,12 @@ app.post('/pupils', (req, res) =>{
     pupils.push(newPupil);
     return res.status(201).json(newPupil);
 })
+
+app.delete('/pupils/:id', (req, res) =>{
+    pupils = pupils.filter(p => p.id !== Number(req.params.id));
+    return res.status(204).send();
+})
+
 app.get('/lessons', (req, res) =>{
     res.json([
         {id: 1, pupilId: 1, topic: "Present simple", date: "10/09/2026", time: "10:00", duration: 60},

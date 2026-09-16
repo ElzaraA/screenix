@@ -11,3 +11,6 @@ export async function getPupilById(id){
     }
     return res.json()
 }
+export async function deletePupil(id){
+    await fetch(`${API_URL}/pupils/${id}`,{method: 'DELETE'})
+}
