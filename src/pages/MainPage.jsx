@@ -2,7 +2,7 @@ import {useState} from 'react'
 import Button from '../components/Button.jsx'  
 // import { pupils as mockPupils} from '../data/mockData.js'
 // import PupilCard from '../components/PupilCard.jsx'
-
+import { addPupil } from '../api/pupils.js'
 function MainPage(){
     const [name, setName ] = useState ('')
     function handleSubmit(e){
@@ -10,14 +10,8 @@ function MainPage(){
     if (!name.trim()){
         return
     }
-    
-    fetch ('http://localhost:3001/pupils',{
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({name: name})
-    })
-        .then(res => res.json())
-        .then(() => setName(''))
+    addPupil(name)
+        .then(() => setName('')) 
 }
     return(
         <main style={{padding:'20px'}}>     

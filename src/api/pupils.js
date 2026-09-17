@@ -14,3 +14,6 @@ export async function getPupilById(id){
 export async function deletePupil(id){
     await fetch(`${API_URL}/pupils/${id}`,{method: 'DELETE'})
 }
+export async function addPupil(name){
+    await fetch (`${API_URL}/pupils`, {method: 'POST', headers: {'Content-Type': 'application/json'},body: JSON.stringify({name: name})})
+}
