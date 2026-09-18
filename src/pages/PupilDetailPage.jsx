@@ -5,6 +5,7 @@ import {getLessons} from '../api/lessons.js'
 import  LessonCard  from '../components/LessonCard.jsx'
 import Button from '../components/Button.jsx' 
 import {deletePupil} from '../api/pupils.js'
+import {updatePupil} from '../api/pupils.js'
 
 function PupilDetailPage() {
     const { id } = useParams()
@@ -12,11 +13,20 @@ function PupilDetailPage() {
     const [pupil, setPupil] = useState(null)
     const [loading, setLoading] = useState(true)
     const [pupilLessons, setPupilLessons] = useState([])
+    const [isEditing, setIsEditing] = useState(false)
+    const [editName, setEditName] = useState('')
+    const [editSubject, setEditSubject] = useState('')
+    const [editAge, setEditAge] = useState('')
+    const [editPhone, setEditPhone] = useState('')
+    const [editTelegram, setEditTelegram] = useState('')
+
+
     useEffect(() => {
         getPupilById(id)
             .then(data => {
             setPupil(data)
             setLoading(false)
+            setIsEditing(false)
         })
         .catch(() => {
             setPupil(null)
@@ -39,15 +49,46 @@ function PupilDetailPage() {
             return
         }
         await deletePupil(id)
-        navigate('/pupils')
-        
-        
+        navigate('/pupils')    
+    }
+    function handleEditStart(){
+        setEditName(pupil.name)
+        setEditSubject(pupil.subject)
+        setEditAge(pupil.age)
+        setEditPhone(pupil.contacts.phone)
+        setEditTelegram(pupil.contacts.telegram)
+        setIsEditing(true)
+    }
+    async function handleSave(e){
+        e.preventDefault()
+        const pupilData = {
+            name: editName,
+            subject: editSubject,
+            age: Number(editAge),
+            contacts: {
+                phone: editPhone,
+                telegram: editTelegram
+            }
+        }
+        await updatePupil(id, pupilData)
+        setPupil(prev => ({...prev, ...pupilData}))
+        setIsEditing(false)
     }
     return (
         <div>
             <h1>Информация об ученике</h1>
-            <p>id: {id}</p>
+            {isEditing ?
+            (<form onSubmit={handleSave}>
+                <Button variant="primary" type="submit">Редактировать ученика</Button>
+                <input value={editName} placeholder = "Имя" onChange={(e) => setEditName(e.target.value)} />
+                <input value={editSubject} placeholder = "Предмет/цель занятий" onChange={(e) => setEditSubject(e.target.value)} />
+                <input value={editAge} placeholder = "Класс/возраст" onChange={(e) => setEditAge(e.target.value)} />
+                <input value={editPhone} placeholder = "Телефон" onChange={(e) => setEditPhone(e.target.value)} />
+                <input value={editTelegram} placeholder = "Телеграм" onChange={(e) => setEditTelegram(e.target.value)} />
+            </form> 
+            ):(
             <p>{pupil.name} - {pupil.age} - {pupil.subject} - {pupil.contacts.telegram}</p>
+            )}
             <div>
                 <p>Уроки</p>
                 {pupilLessons.map(lesson => (
@@ -56,6 +97,7 @@ function PupilDetailPage() {
             </div>
             <div>
                 <Button variant="danger" onClick = {handleDelete}>Удалить</Button>
+                <Button variant="secondary" onClick = {handleEditStart}>Редактировать</Button>
             </div>
         </div>
     )
