@@ -25,7 +25,8 @@ function MainPage(){
         }
     }
     addPupil(pupilData)
-        .then(() => {setName('')
+        .then(() => {
+            setName('')
             setSubject('')
             setAge('')
             setPhone('')

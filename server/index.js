@@ -41,4 +41,10 @@ app.get('/pupils/:id', (req, res) =>{
     }
     res.json(pupil)
 })
+app.patch('/pupils/:id', (req, res) =>{
+    const {id} = req.params;
+    pupils = pupils.map(p => p.id === Number(id) ? {...p, ...req.body} : p)
+    const updatedPupil = pupils.find(p => p.id === Number(id))
+    res.json(updatedPupil)
+})
 app.listen(3001, () => console.log('Server started on port 3001'))

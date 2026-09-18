@@ -17,3 +17,6 @@ export async function deletePupil(id){
 export async function addPupil(pupilData){
     await fetch (`${API_URL}/pupils`, {method: 'POST', headers: {'Content-Type': 'application/json'},body: JSON.stringify(pupilData)})
 }
+export async function updatePupil(id, pupilData){
+    await fetch (`${API_URL}/pupils/${id}`, {method: 'PATCH', headers: {'Content-Type': 'application/json'},body: JSON.stringify(pupilData)})
+}
